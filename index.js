@@ -2,8 +2,10 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const connectDB = require('./database/db'); // Update the path accordingly
+const connectDB = require('./database/db');
 const dotenv = require('dotenv');
+const swaggerUi = require('swagger-ui-express');
+const specs = require('./swaggerConfig');
 
 dotenv.config();
 

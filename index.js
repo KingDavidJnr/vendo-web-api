@@ -31,6 +31,10 @@ app.get('/', (req, res) => {
   res.send('Welcome to Vendo Backend Service')
 });
 
+// The endpoint to Swagger UI documentation
+app.use('/documentation', swaggerUi.serve, swaggerUi.setup(specs));
+
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

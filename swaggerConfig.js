@@ -10,7 +10,7 @@ const options = {
       description: 'API documentation for the Vendo application',
     },
   },
-  apis: ['./routes/*.js'], // Modify this path based on your project structure
+  apis: ['./routes/*.js'],
 };
 
 const specs = swaggerJsdoc(options);

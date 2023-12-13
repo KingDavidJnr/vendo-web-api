@@ -1,26 +1,19 @@
-// controller/user/userController.js
-const UserModel = require('../../model/user/userModel');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// controller/userController.js
+const { hashPassword, comparePasswords } = require('../utils/bcryptUtils');
+const { createJWT } = require('../utils/jwtUtils');
+const User = require('../model/user');
 
-// Controller function to handle user registration
+// Controller function for user registration
 const registerUser = async (req, res) => {
   try {
-    // Extract user information from the request body
+    // Extract user registration data from request body
     const { firstName, lastName, email, password } = req.body;
 
-    // Check if the user with the given email already exists
-    const existingUser = await UserModel.findOne({ email });
+    // Hash the password before storing it in the database
+    const hashedPassword = await hashPassword(password);
 
-    if (existingUser) {
-      return res.status(400).json({ message: 'User with this email already exists' });
-    }
-
-    // Hash the user's password before saving it to the database
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create a new user instance
-    const newUser = new UserModel({
+    // Create a new user in the database
+    const newUser = new User({
       firstName,
       lastName,
       email,
@@ -30,46 +23,56 @@ const registerUser = async (req, res) => {
     // Save the user to the database
     await newUser.save();
 
-    // Respond with a success message
+    // Respond with a success message or JWT token
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    console.error('Error during user registration:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-// Controller function to handle user login
+// Controller function for user login
 const loginUser = async (req, res) => {
   try {
-    // Extract user credentials from the request body
+    // Extract login data from request body
     const { email, password } = req.body;
 
-    // Check if the user with the given email exists
-    const user = await UserModel.findOne({ email });
+    // Find the user by email in the database
+    const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(401).json({ message: 'User not found!' });
+    // Check if the user exists and the password is correct
+    if (user && await comparePasswords(password, user.password)) {
+      // Generate a JWT token for the user
+      const token = createJWT({ userId: user._id, email: user.email });
+
+      // Respond with the JWT token
+      res.status(200).json({ token });
+    } else {
+      // Respond with an authentication error
+      res.status(401).json({ error: 'Invalid credentials' });
     }
-
-    // Compare the provided password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid Password' });
-    }
-
-    // Create a JWT token for authentication
-    const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    // Respond with the token
-    res.status(200).json({ token });
   } catch (error) {
-    console.error('Error during user login:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Controller function for getting user profile (protected route)
+const getUserProfile = async (req, res) => {
+  try {
+    // User information is available in req.user after authentication middleware
+    const { _id, firstName, lastName, email } = req.user;
+
+    // Respond with the user's profile information
+    res.status(200).json({ _id, firstName, lastName, email });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 module.exports = {
   registerUser,
   loginUser,
+  getUserProfile,
 };

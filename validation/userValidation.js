@@ -1,23 +1,20 @@
 // validation/userValidation.js
 const Joi = require('joi');
 
-// Validation schema for user registration
-const registrationSchema = Joi.object({
+const userRegistrationSchema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
+  role: Joi.string().valid('vendor', 'customer').required(), // Adjust roles based on application
 });
 
-// Validation schema for user login
-const loginSchema = Joi.object({
+const userLoginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
 
-// Export the validation schemas
 module.exports = {
-  registrationSchema,
-  loginSchema,
-  // ... (other user-related validation schemas, if needed)
+  userRegistrationValidation: (data) => userRegistrationSchema.validate(data),
+  userLoginValidation: (data) => userLoginSchema.validate(data),
 };

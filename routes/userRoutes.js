@@ -13,7 +13,7 @@ const { authenticateUser } = require('../middleware/authMiddleware');
 
 /**
  * @swagger
- * /register:
+ * /user/register:
  *   post:
  *     summary: Register a new user
  *     description: Create a new user account.
@@ -36,7 +36,7 @@ router.post('/register', UserController.registerUser);
 
 /**
  * @swagger
- * /login:
+ * /user/login:
  *   post:
  *     summary: User login
  *     description: Log in an existing user.
@@ -59,7 +59,7 @@ router.post('/login', UserController.loginUser);
 
 /**
  * @swagger
- * /profile:
+ * /user/profile:
  *   get:
  *     summary: Get user profile
  *     description: Retrieve the profile of the authenticated user.

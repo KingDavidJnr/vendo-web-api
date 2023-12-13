@@ -6,7 +6,7 @@ const userRegistrationSchema = Joi.object({
   lastName: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  role: Joi.string().valid('vendor', 'customer').required(), // Adjust roles based on your application
+  role: Joi.string().valid('vendor', 'customer').required(), // Adjust roles based on application
 });
 
 const userLoginSchema = Joi.object({

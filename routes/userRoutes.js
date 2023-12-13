@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controller/userController');
+const { authenticateUser } = require('../middleware/authMiddleware');
+const { userRegistrationValidation, userLoginValidation } = require('../validation/userValidation');
 
 /**
  * @swagger
@@ -21,25 +23,27 @@ const UserController = require('../controller/userController');
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               firstName:
- *                 type: string
- *               lastName:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - firstName
- *               - lastName
- *               - email
- *               - password
+ *             $ref: '#/components/schemas/UserRegistration'
  *     responses:
  *       201:
  *         description: User registered successfully
  */
+
+router.post('/register', async (req, res) => {
+  try {
+    const { error, value } = userRegistrationValidation(req.body);
+
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
+    // Call the controller function with the validated data
+    await UserController.registerUser(req, res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 /**
  * @swagger
@@ -52,15 +56,7 @@ const UserController = require('../controller/userController');
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
+ *             $ref: '#/components/schemas/UserLogin'
  *     responses:
  *       200:
  *         description: Login successful
@@ -69,6 +65,22 @@ const UserController = require('../controller/userController');
  *             example:
  *               token: <JWT token>
  */
+
+router.post('/login', async (req, res) => {
+  try {
+    const { error, value } = userLoginValidation(req.body);
+
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
+    // Call the controller function with the validated data
+    await UserController.loginUser(req, res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 /**
  * @swagger
@@ -91,8 +103,6 @@ const UserController = require('../controller/userController');
  *               email: john@example.com
  */
 
-router.post('/register', UserController.registerUser);
-router.post('/login', UserController.loginUser);
 router.get('/profile', authenticateUser, UserController.getUserProfile);
 
 module.exports = router;

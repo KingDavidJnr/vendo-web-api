@@ -1,9 +1,8 @@
-// routes/userRoutes.js
+// routes/userRoute.js
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controller/userController');
 const { authenticateUser } = require('../middleware/authMiddleware');
-const { userRegistrationValidation, userLoginValidation } = require('../validation/userValidation');
 
 /**
  * @swagger
@@ -14,7 +13,7 @@ const { userRegistrationValidation, userLoginValidation } = require('../validati
 
 /**
  * @swagger
- * /users/register:
+ * /register:
  *   post:
  *     summary: Register a new user
  *     description: Create a new user account.
@@ -27,27 +26,17 @@ const { userRegistrationValidation, userLoginValidation } = require('../validati
  *     responses:
  *       201:
  *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               token: <JWT token>
  */
 
-router.post('/register', async (req, res) => {
-  try {
-    const { error, value } = userRegistrationValidation(req.body);
-
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-
-    // Call the controller function with the validated data
-    await UserController.registerUser(req, res);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+router.post('/register', UserController.registerUser);
 
 /**
  * @swagger
- * /users/login:
+ * /login:
  *   post:
  *     summary: User login
  *     description: Log in an existing user.
@@ -66,25 +55,11 @@ router.post('/register', async (req, res) => {
  *               token: <JWT token>
  */
 
-router.post('/login', async (req, res) => {
-  try {
-    const { error, value } = userLoginValidation(req.body);
-
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-
-    // Call the controller function with the validated data
-    await UserController.loginUser(req, res);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+router.post('/login', UserController.loginUser);
 
 /**
  * @swagger
- * /users/profile:
+ * /profile:
  *   get:
  *     summary: Get user profile
  *     description: Retrieve the profile of the authenticated user.
@@ -103,6 +78,6 @@ router.post('/login', async (req, res) => {
  *               email: john@example.com
  */
 
-router.get('/profile', authenticateUser, UserController.getUserProfile);
+router.get('/profile', UserController.getUserProfile);
 
 module.exports = router;

@@ -6,6 +6,7 @@ const connectDB = require('./database/db');
 const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const specs = require('./swaggerConfig');
+const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
 
@@ -20,10 +21,10 @@ app.use(bodyParser.json());
 connectDB();
 
 // Routes
-//const userRoutes = require('./routes/user/userRoutes');
+
 // Add other route imports here
 
-//app.use('/user', userRoutes);
+app.use('/user', userRoutes);
 // Add other route usages here
 
 // Home page display information

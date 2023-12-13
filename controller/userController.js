@@ -1,8 +1,11 @@
 // controller/userController.js
 const { hashPassword, comparePassword } = require('../utils/bcryptUtils');
 const { createJWT } = require('../utils/jwtUtils');
-const User = require('../model/user');
-const { userRegistrationValidation, userLoginValidation } = require('../validation/userValidation');
+const User = require('../model/userModel');
+const {
+  userRegistrationValidation,
+  userLoginValidation,
+} = require('../validation/userValidation');
 
 const registerUser = async (req, res) => {
   try {
@@ -14,7 +17,6 @@ const registerUser = async (req, res) => {
 
     const { firstName, lastName, email, password, role } = value;
 
-    // Check if the email is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email is already registered' });
@@ -32,12 +34,16 @@ const registerUser = async (req, res) => {
 
     await newUser.save();
 
-    const token = createJWT({ userId: newUser._id, email: newUser.email, role: newUser.role });
+    const token = createJWT({
+      userId: newUser._id,
+      email: newUser.email,
+      role: newUser.role,
+    });
 
     res.status(201).json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error - User Registration' });
   }
 };
 
@@ -61,12 +67,16 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = createJWT({ userId: user._id, email: user.email, role: user.role });
+    const token = createJWT({
+      userId: user._id,
+      email: user.email,
+      role: user.role,
+    });
 
     res.status(200).json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error - User Login' });
   }
 };
 
@@ -78,7 +88,7 @@ const getUserProfile = (req, res) => {
     res.status(200).json({ _id, firstName, lastName, email, role });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error - Get User Profile' });
   }
 };
 

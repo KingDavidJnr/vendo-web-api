@@ -1,6 +1,5 @@
 // model/user/userModel.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   userId: {
@@ -32,34 +31,21 @@ const userSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-// Middleware to generate a 10-digit integer ID before saving
+// Middleware to generate a 10-digit integer userId before saving
 userSchema.pre('save', function (next) {
   const user = this;
 
-  // Generate a 10-digit integer ID
-  user.userId = generate10DigitId();
+  // Generate a 10-digit integer userId
+  user.userId = generate10DigitUserId();
 
-  // Hash the password only if it has been modified or is new
-  if (!user.isModified('password')) return next();
-
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) return next(err);
-
-    bcrypt.hash(user.password, salt, (err, hashedPassword) => {
-      if (err) return next(err);
-
-      // Replace the plain text password with the hashed password
-      user.password = hashedPassword;
-      next();
-    });
-  });
+  next();
 });
 
-const UserModel = mongoose.model('User', userSchema);
-
-// Function to generate a 10-digit integer ID
-function generate10DigitId() {
+// Function to generate a 10-digit integer userId
+function generate10DigitUserId() {
   return Math.floor(1000000000 + Math.random() * 9000000000);
 }
+
+const UserModel = mongoose.model('User', userSchema);
 
 module.exports = UserModel;

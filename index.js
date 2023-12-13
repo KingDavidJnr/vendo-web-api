@@ -18,11 +18,16 @@ app.use(bodyParser.json());
 connectDB();
 
 // Routes
-const userRoutes = require('./routes/user/userRoutes');
+//const userRoutes = require('./routes/user/userRoutes');
 // Add other route imports here
 
-app.use('/user', userRoutes);
+//app.use('/user', userRoutes);
 // Add other route usages here
+
+// Home page display information
+app.get('/', (req, res) => {
+  res.send('Welcome to Vendo Backend Service')
+});
 
 // Start Server
 app.listen(PORT, () => {

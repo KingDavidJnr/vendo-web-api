@@ -11,14 +11,18 @@ const userRoutes = require('./routes/userRoutes');
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+    res.locals.path = req.path;
+    next();
+});
 const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-
-// MongoDB Connection
-connectDB();
 
 // Routes
 
@@ -38,5 +42,6 @@ app.use('/documentation', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Start Server
 app.listen(PORT, () => {
+  connectDB(); //Run MongoDB database connection whenever server starts
   console.log(`Server is running on port ${PORT}`);
 });

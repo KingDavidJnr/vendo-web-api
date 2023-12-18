@@ -12,6 +12,10 @@ const reviewSchema = new mongoose.Schema({
     ref: 'Product',
     required: true,
   },
+  review_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
+  },
   rating: {
     type: Number,
     required: true,

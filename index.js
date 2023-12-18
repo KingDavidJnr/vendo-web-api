@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const vendorRoute = require('./routes/vendorRoutes');
 const customerRoute = require('./routes/customerRoutes');
 const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes')
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use('/user', userRoutes);
 app.use('/vendor', vendorRoute);
 app.use('/customer', customerRoute);
 app.use('/product', productRoutes);
+app.use('/order', orderRoutes);
 
 
 // Home page display information

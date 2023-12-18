@@ -36,6 +36,42 @@ const options = {
           },
           required: ['productId', 'quantity'],
         },
+        CustomerProfile: {
+          type: 'object',
+          properties: {
+            // Define the properties for the customer profile
+          },
+        },
+        UpdatedCustomerProfile: {
+          type: 'object',
+          properties: {
+            // Define the properties for the updated customer profile
+          },
+        },
+        Product: {
+          type: 'object',
+          properties: {
+            // Define the properties for the product
+          },
+        },
+        AddReview: {
+          type: 'object',
+          properties: {
+            // Define the properties for adding a review
+          },
+        },
+        UpdateReview: {
+          type: 'object',
+          properties: {
+            // Define the properties for updating a review
+          },
+        },
+        VendorStore: {
+          type: 'object',
+          properties: {
+            // Define the properties for the vendor store
+          },
+        },
       },
     },
   },

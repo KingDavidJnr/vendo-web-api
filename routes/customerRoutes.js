@@ -35,7 +35,7 @@ const { authenticateUser } = require('../middleware/authMiddleware');
  *       500:
  *         description: Internal Server Error
  */
-router.post('/create-profile', authenticateUser, CustomerController.createCustomerProfile);
+router.post('/create-profile', CustomerController.createCustomerProfile);
 
 /**
  * @swagger
@@ -60,7 +60,7 @@ router.post('/create-profile', authenticateUser, CustomerController.createCustom
  *       500:
  *         description: Internal Server Error
  */
-router.get('/orders', authenticateUser, CustomerController.getCustomerOrders);
+router.get('/orders', CustomerController.getCustomerOrders);
 
 /**
  * @swagger
@@ -85,7 +85,7 @@ router.get('/orders', authenticateUser, CustomerController.getCustomerOrders);
  *       500:
  *         description: Internal Server Error
  */
-router.get('/reviews', authenticateUser, CustomerController.getCustomerReviews);
+router.get('/reviews', CustomerController.getCustomerReviews);
 
 /**
  * @swagger
@@ -110,7 +110,7 @@ router.get('/reviews', authenticateUser, CustomerController.getCustomerReviews);
  *       500:
  *         description: Internal Server Error
  */
-router.get('/vendors', authenticateUser, CustomerController.viewAllVendors);
+router.get('/vendors', CustomerController.viewAllVendors);
 
 /**
  * @swagger
@@ -136,7 +136,7 @@ router.get('/vendors', authenticateUser, CustomerController.viewAllVendors);
  *       500:
  *         description: Internal Server Error
  */
-router.put('/update-profile', authenticateUser, CustomerController.updateCustomerProfile);
+router.put('/update-profile', CustomerController.updateCustomerProfile);
 
 // ... (other customer-related routes)
 

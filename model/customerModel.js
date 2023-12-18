@@ -1,6 +1,6 @@
 // model/customer/customerModel.js
 const mongoose = require('mongoose');
-const User = require('../user/userModel');
+const User = require('../model/userModel');
 
 const customerSchema = new mongoose.Schema({
   // Additional customer-related fields

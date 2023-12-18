@@ -8,6 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 const specs = require('./swaggerConfig');
 const userRoutes = require('./routes/userRoutes');
 const vendorRoute = require('./routes/vendorRoutes');
+const customerRoute = require('./routes/customerRoutes');
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/user', userRoutes);
 app.use('/vendor', vendorRoute);
+app.use('/customer', customerRoute);
 
 
 // Home page display information

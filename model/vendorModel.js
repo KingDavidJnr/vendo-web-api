@@ -1,6 +1,6 @@
 // model/vendor/vendorModel.js
 const mongoose = require('mongoose');
-const User = require('../user/userModel');
+const User = require('../model/userModel');
 
 const vendorSchema = new mongoose.Schema({
   // Additional vendor-related fields

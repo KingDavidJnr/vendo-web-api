@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const specs = require('./swaggerConfig');
 const userRoutes = require('./routes/userRoutes');
+const vendorRoute = require('./routes/vendorRoutes');
 
 dotenv.config();
 
@@ -25,11 +26,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-
-// Add other route imports here
-
 app.use('/user', userRoutes);
-// Add other route usages here
+app.use('/vendor', vendorRoute);
+
 
 // Home page display information
 app.get('/', (req, res) => {

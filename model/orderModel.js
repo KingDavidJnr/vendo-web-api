@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   orderId: {
-    type: Number,
-    required: true,
-    unique: true,
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
   },
   customer: {
     type: mongoose.Schema.Types.ObjectId,

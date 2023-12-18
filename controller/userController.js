@@ -40,12 +40,15 @@ const registerUser = async (req, res) => {
       role: newUser.role,
     });
 
-    res.status(201).json({ token });
+    res.status(200).json({
+      message: `Hello, ${firstName}! You are now registered.`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error - User Registration' });
   }
 };
+
 
 const loginUser = async (req, res) => {
   try {

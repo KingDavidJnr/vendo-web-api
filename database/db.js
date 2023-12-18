@@ -8,7 +8,9 @@ dotenv.config();
 const connectDB = async () => {
   try {
     // Use mongoose to connect to MongoDB with provided connection URI
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'vendo-web-app',
+    });
 
     // Log a successful connection message
     console.log('Successfully connected to MongoDB!');

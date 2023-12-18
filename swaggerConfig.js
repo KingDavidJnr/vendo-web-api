@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Vendo API',
+      title: 'Vendo Web API',
       version: '1.0.0',
-      description: 'API documentation for the Vendo application',
+      description: 'API documentation for the Vendo Web Application',
     },
     components: {
       schemas: {
@@ -27,6 +27,14 @@ const options = {
             email: { type: 'string', format: 'email' },
             password: { type: 'string' },
           },
+        },
+        ProductOrder: {
+          type: 'object',
+          properties: {
+            productId: { type: 'string' },
+            quantity: { type: 'number' },
+          },
+          required: ['productId', 'quantity'],
         },
       },
     },

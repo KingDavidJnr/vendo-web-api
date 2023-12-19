@@ -42,6 +42,7 @@ const registerUser = async (req, res) => {
 
     res.status(200).json({
       message: `Hello, ${firstName}! You are now registered.`,
+      token,
     });
   } catch (error) {
     console.error(error);
@@ -76,7 +77,10 @@ const loginUser = async (req, res) => {
       role: user.role,
     });
 
-    res.status(200).json({ token });
+    res.status(200).json({ 
+      message: 'User Successfully logged in!',
+      token, 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error - User Login' });
